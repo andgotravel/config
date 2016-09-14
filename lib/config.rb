@@ -11,13 +11,21 @@ module Config
   # Ensures the setup only gets run once
   @@_ran_once = false
 
-  mattr_accessor :const_name, :use_env, :env_prefix, :env_separator, :env_converter, :env_parse_values
+  mattr_accessor :const_name,
+                 :use_env,
+                 :env_prefix,
+                 :env_separator,
+                 :env_converter,
+                 :env_parse_values,
+                 :custom_filenames_as_sections
+
   @@const_name = 'Settings'
   @@use_env    = false
   @@env_prefix = @@const_name
   @@env_separator = '.'
   @@env_converter = :downcase
   @@env_parse_values = true
+  @@custom_filenames_as_sections = false
 
   # deep_merge options
   mattr_accessor :knockout_prefix, :overwrite_arrays
@@ -40,6 +48,19 @@ module Config
     end
 
     config.load!
+    config.load_env! if @@use_env
+    config
+  end
+
+  def self.load_custom_files(*files)
+    config = Options.new
+
+    # add settings sources
+    [files].flatten.compact.uniq.each do |file|
+      config.add_source!(file.to_s)
+    end
+
+    config.load!(include_filename_as_section: true)
     config.load_env! if @@use_env
     config
   end

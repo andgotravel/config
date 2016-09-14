@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'byebug'
 
 module Config
   class Options < OpenStruct
@@ -15,7 +16,6 @@ module Config
     def add_source!(source)
       # handle yaml file paths
       source = (Sources::YAMLSource.new(source)) if source.is_a?(String)
-
       @config_sources ||= []
       @config_sources << source
     end
@@ -61,10 +61,11 @@ module Config
     alias :load_env! :reload_env!
 
     # look through all our sources and rebuild the configuration
-    def reload!
+    def reload!(include_filename_as_section: false)
       conf = {}
       @config_sources.each do |source|
-        source_conf = source.load
+        byebug
+        source_conf = source.load(include_filename_as_section: include_filename_as_section)
 
         if conf.empty?
           conf = source_conf

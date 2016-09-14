@@ -11,11 +11,18 @@ module Config
       end
 
       # returns a config hash from the YML file
-      def load
+      def load(include_filename_as_section: false)
         if @path and File.exist?(@path.to_s)
           result = YAML.load(ERB.new(IO.read(@path.to_s)).result)
         end
-        result || {}
+
+        return {} unless result
+
+        if include_filename_as_section
+          { File.basename(@path.to_s, '.*') => result }
+        else
+          result
+        end
       rescue Psych::SyntaxError => e
         raise "YAML syntax error occurred while parsing #{@path}. " \
               "Please note that YAML must be consistently indented using spaces. Tabs are not allowed. " \

@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'bundler',     '~> 1.13',  '>= 1.13.1'
   s.add_development_dependency 'rake',        '~> 11.2',  '>= 11.2.2'
+  s.add_development_dependency 'byebug'
 
   # Testing
   s.add_development_dependency 'appraisal',   '~> 2.1',   '>= 2.1.0'
