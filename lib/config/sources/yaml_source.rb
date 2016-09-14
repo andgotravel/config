@@ -21,6 +21,7 @@ module Config
         if include_filename_as_section
           result = { File.basename(@path.to_s, '.*') => result }
 	  dir = File.dirname @path
+	  dir.delete('config')
 	  dir.split('/').reverse.inject(result) { |h, s|  {s => h}  }
         else
           result
