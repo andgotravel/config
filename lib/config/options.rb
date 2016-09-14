@@ -64,7 +64,6 @@ module Config
     def reload!(include_filename_as_section: false)
       conf = {}
       @config_sources.each do |source|
-        byebug
         source_conf = source.load(include_filename_as_section: include_filename_as_section)
 
         if conf.empty?

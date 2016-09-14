@@ -19,7 +19,9 @@ module Config
         return {} unless result
 
         if include_filename_as_section
-          { File.basename(@path.to_s, '.*') => result }
+          result = { File.basename(@path.to_s, '.*') => result }
+	  dir = File.dirname @path
+	  dir.split('/').reverse.inject(result) { |h, s|  {s => h}  }
         else
           result
         end
