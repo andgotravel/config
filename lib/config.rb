@@ -71,6 +71,11 @@ module Config
     Kernel.const_set(Config.const_name, Config.load_files(files))
   end
 
+  def self.load_custom_files_and_set_settings(*files)
+    Kernel.send(:remove_const, Config.const_name) if Kernel.const_defined?(Config.const_name)
+    Kernel.const_set(Config.const_name, Config.load_custom_files(files))
+  end
+
   def self.setting_files(config_root, env)
     [
       File.join(config_root, "settings.yml").to_s,
