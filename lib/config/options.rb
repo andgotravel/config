@@ -5,6 +5,11 @@ module Config
   class Options < OpenStruct
     include Enumerable
 
+    def initialize
+      @config_sources ||= []
+      super
+    end
+
     def keys
       marshal_dump.keys
     end
@@ -16,14 +21,12 @@ module Config
     def add_source!(source, section_path=nil)
       # handle yaml file paths
       source = (Sources::YAMLSource.new(source, section_path)) if source.is_a?(String)
-      @config_sources ||= []
       @config_sources << source
     end
 
     def prepend_source!(source)
       source = (Sources::YAMLSource.new(source)) if source.is_a?(String)
 
-      @config_sources ||= []
       @config_sources.unshift(source)
     end
 
