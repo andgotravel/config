@@ -13,9 +13,9 @@ module Config
       marshal_dump.empty?
     end
 
-    def add_source!(source)
+    def add_source!(source, section_path)
       # handle yaml file paths
-      source = (Sources::YAMLSource.new(source)) if source.is_a?(String)
+      source = (Sources::YAMLSource.new(source, section_path)) if source.is_a?(String)
       @config_sources ||= []
       @config_sources << source
     end

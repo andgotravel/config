@@ -6,8 +6,9 @@ module Config
     class YAMLSource
       attr_accessor :path
 
-      def initialize(path)
+      def initialize(path, section_path=nil)
         @path = path
+        @section_path = section_path
       end
 
       # returns a config hash from the YML file
@@ -18,11 +19,15 @@ module Config
 
         return {} unless result
 
-        if include_filename_as_section
-          result = { File.basename(@path.to_s, '.*') => result }
-	  dir = File.dirname(@path).split('/')
-	  dir.delete('config')
-	  dir.reverse.inject(result) { |h, s|  {s => h}  }
+        if @section_path
+          # result = { File.basename(@path.to_s, '.*') => result }
+      	  # dir = File.dirname(@path).split('/')
+      	  # dir.delete('config')
+      	  # dir.reverse.inject(result) { |h, s|  {s => h}  }
+          @section_path.split('/')
+                       .reverse
+                       .inject(result) { |h, s| { s => h } }
+
         else
           result
         end
