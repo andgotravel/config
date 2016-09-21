@@ -18,7 +18,7 @@ module Config
         end
 
         return {} unless result
-
+        byebug
         if @section_path
           # result = { File.basename(@path.to_s, '.*') => result }
       	  # dir = File.dirname(@path).split('/')
